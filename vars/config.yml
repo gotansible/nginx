@@ -1,19 +1,21 @@
 
 # nginx.conf
+# python or jinja2 interpret on as True so we need to quote on and off
 nginx_worker_processes: "{{ ansible_processor_vcpus + 2 }}"
 nginx_worker_connections: 1024
-nginx_multi_accept: off
+nginx_multi_accept: 'off'
 nginx_worker_rlimit_nofile: null
-nnginx_disable_access_log: no
-nginx_server_tokens: off
-nginx_sendfile: on
-nginx_keepalive: on
+nnginx_disable_access_log: 'no'
+nginx_server_tokens: 'off'
+#https://t37.net/nginx-optimization-understanding-sendfile-tcp_nodelay-and-tcp_nopush.html
+nginx_sendfile: 'on'
+nginx_keepalive: 'on'
 nginx_keepalive_timeout: 40
 nginx_client_body_timeout: 20
 nginx_client_header_timeout: 15
 nginx_send_timeout: 15
 nginx_proxy_read_timeout: 60s
-nginx_buffers: on
+nginx_buffers: 'on'
 nginx_client_body_buffer_size: 12k
 nginx_client_header_buffer_size: 1k
 nginx_client_max_body_size: 10m
@@ -22,7 +24,7 @@ nginx_server_names_hash_bucket_size: 64
 nginx_types_hash_max_size: 2048
 nginx_types_hash_bucket_size: 64
 nginx_disable_access_log: false
-nginx_gzip: on
+nginx_gzip: 'on'
 nginx_gzip_http_version: 1.1
 nginx_gzip_comp_level: 2
 nginx_gzip_min_length: 1024
@@ -47,3 +49,11 @@ nginx_gzip_types:
 nginx_gzip_disable: "MSIE [1-6]\\."
 
 nginx_naxsi_enabled: false
+
+
+# Health
+
+nginx_allow_health_cidr:
+  - 10.0.0.0/24
+  - 10.0.1.0/24
+  - 10.0.2.0/24

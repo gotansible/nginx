@@ -1,0 +1,42 @@
+
+- name: pagespeed - install Debian packages
+  apt:
+    name={{ item }}
+    state=present
+    update_cache=yes
+    cache_valid_time=3600
+  with_items: nginx_pagespeed_debian_packages
+  register: apt_output
+  changed_when: "'0 upgraded, 0 newly installed, 0 to remove' not in apt_output.stdout and 'not upgraded' not in apt_output.stdout"
+  when: ansible_os_family == "Debian"
+
+- name: pagespeed - install CentOS packages
+  yum:
+    name={{ item }}
+    state=present
+    update_cache=yes
+  with_items: nginx_pagespeed_centos_packages
+  when: ansible_os_family == "RedHat"
+
+- name: pagespeed - download pagespeed
+  get_url:
+    url={{nginx_pagespeed_url}}
+    dest={{ nginx_build_folder }}/ngx_pagespeed_module.tar.gz
+
+- name: pagespeed - extract nginx
+  unarchive:
+    src={{ nginx_build_folder }}/ngx_pagespeed_module.tar.gz
+    dest={{ nginx_build_folder }}
+    copy=no
+
+- name: pagespeed - download the psol source
+  get_url:
+    url={{ nginx_pagespeec_psol_url }}
+    dest={{ nginx_build_folder }}/psol.tar.gz
+
+- name: pagespeed - extract psol source
+  unarchive:
+    src={{ nginx_build_folder }}/psol.tar.gz
+    dest={{ nginx_build_folder }}
+    copy=no
+

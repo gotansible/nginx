@@ -1,0 +1,17 @@
+---
+- name: naxsi - download naxsi
+  get_url:
+    url={{nginx_naxsi_url}}
+    dest={{ nginx_build_folder }}/nginx-naxsi-module.tar.gz
+
+- name: naxsi - extract naxsi
+  unarchive:
+    src={{ nginx_build_folder }}/nginx-naxsi-module.tar.gz
+    dest={{ nginx_build_folder }}
+    copy=no
+
+- name: naxsi - config
+  copy:
+    src=naxsi_core.rules
+    dest={{nginx_config_dir}}/naxsi_core.rules
+    mode=0644

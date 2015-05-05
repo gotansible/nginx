@@ -22,7 +22,7 @@ http {
 	include      {{nginx_config_dir}}/mime.types;
 	default_type application/octet-stream;
 	charset      utf-8;
-{% if naxsi_enabled is defined %}
+{% if nginx_naxsi_enabled %}
 	include      {{nginx_config_dir}}/naxsi_core.rules;
 {% endif %}
 
@@ -48,9 +48,9 @@ http {
 {% if nginx_disable_access_log %}
 	access_log    off;
 {% else %}
-  access_log {{nginx_log_dir}}/access.log
+  access_log {{nginx_log_dir}}/access.log;
 {% endif %}
-`
+
 {% if nginx_server_tokens %}
   server_tokens {{nginx_server_tokens}};
 {% endif %}
@@ -73,11 +73,10 @@ http {
   gzip_min_length {{nginx_gzip_min_length}};
   gzip_proxied {{nginx_gzip_proxied}};
   gzip_vary {{nginx_gzip_vary}};
-{% if nginx_gzip_buffers %}
+  {% if nginx_gzip_buffers %}
   gzip_buffers {{nginx_gzip_buffers}};
-{% endif %}
+  {% endif %}
   gzip_types {{nginx_gzip_types|join(' ')}};
-  gzip_min_length {{nginx_gzip_min_length}};
   gzip_disable     "{{nginx_gzip_disable}}";
 {% endif %}
 
@@ -113,8 +112,8 @@ http {
 	
 	####### SSL END
 
-
-  include {{nginx_config_dir}}/conf.d/*.conf;
-  include {{nginx_config_dir}}/sites-enabled/*;
+	include {{nginx_config_dir}}/conf.d/*.conf;
+	include {{nginx_config_dir}}/sites-enabled/*;
 }
+
 
