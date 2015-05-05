@@ -1,0 +1,23 @@
+---
+- include_vars: config.yml
+
+- stat: path=/etc/ssl/certs/dhparam.pem
+  register: hdparam_file
+
+- name: config - configure openssl
+  command: "openssl dhparam -out dhparam.pem {{nginx_openssl_hdparam_bits}}"
+  args:
+    chdir: /etc/ssl/certs
+  when: not hdparam_file.stat.exists
+
+- name: config - configure mime.types
+  copy:
+    src=mime.types
+    dest={{ nginx_config_dir }}
+
+- name: config - configure root nginx.conf
+  template:
+    src=nginx.conf.j2
+    dest={{ nginx_config_dir }}/nginx.conf
+    validate='{{ nginx_bin }} -t -c %s'
+

@@ -1,0 +1,35 @@
+
+- name: create nginx group
+  group:
+    name={{ nginx_group }}
+    state=present
+
+- name: create nginx user
+  user:
+    name={{ nginx_user }}
+    group={{ nginx_group }}
+
+- name: setup build folder
+  file:
+    state=directory
+    path={{ nginx_build_folder }}
+
+- name: setup- create directories
+  file:
+    state=directory
+    path={{ item }}
+    owner={{ nginx_user }}
+    group={{ nginx_group }}
+    mode=0755
+  with_items:
+    - "{{ nginx_config_dir }}"
+    - "{{ nginx_config_dir }}/sites-enabled"
+    - "{{ nginx_config_dir }}/conf.d"
+    - "{{ nginx_log_dir }}"
+    - /var/lib/nginx/tmp/client_body
+    - /var/lib/nginx/tmp/proxy
+    - /var/lib/nginx/tmp/fastcgi
+    - /etc/ssl/certs
+
+
+

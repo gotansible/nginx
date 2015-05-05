@@ -1,0 +1,14 @@
+---
+# tasks file for nginx
+
+- include: depend.yml
+- include: setup.yml
+- include: ngx_txid.yml
+- include: install_source.yml
+- include: config.yml
+- include: runit_service.yml
+  vars:
+    service_name: "{{ nginx_service_name }}"
+    service_user: "{{ root }}"
+    service_command: "{{ nginx_bin }} -c {{ nginx_config_dir }}/nginx.conf"
+

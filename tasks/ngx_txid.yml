@@ -1,0 +1,6 @@
+---
+- name: copy and unarchive txid plugin
+  unarchive: 
+    src=ngx_txid.tar.gz
+    dest={{ nginx_build_folder }}
+    copy=yes

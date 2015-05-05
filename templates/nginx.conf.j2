@@ -1,0 +1,120 @@
+user  {{nginx_user}}{% if nginx_user != nginx_group %} {{nginx_group}}{% endif %};
+worker_processes  {{nginx_worker_processes}};
+error_log  {{nginx_log_dir}}/error.log;
+pid        {{nginx_pid}};
+daemon off;
+
+events {
+	worker_connections  {{nginx_worker_connections}};
+{% if nginx_multi_accept %}
+	multi_accept on;
+{% endif %}
+}
+
+{% if nginx_worker_rlimit_nofile %}
+# Changes the limit on the largest size of a core file (RLIMIT_CORE) for worker processes.
+# Used to increase the limit without restarting the main process.
+worker_rlimit_nofile {{nginx_worker_rlimit_nofile}};
+{% endif %}
+
+http {
+	index index.html index.htm;
+	include      {{nginx_config_dir}}/mime.types;
+	default_type application/octet-stream;
+	charset      utf-8;
+{% if naxsi_enabled is defined %}
+	include      {{nginx_config_dir}}/naxsi_core.rules;
+{% endif %}
+
+	log_format json '{"txid" : "$txid", '
+        '"status" : \"$status\", '
+        '"method" : "$request_method", '
+        '"uri" : "$uri", '
+        '"gross_time" : "$request_time", '
+        '"upstream_time" : "$upstream_response_time", '
+        '"bytes" : "$body_bytes_sent", '
+        '"refer" : "$http_referer", '
+        '"domain" : "$host", '
+        '"client_ip" : "$http_incap_client_ip", '
+        '"ua" : "$http_user_agent", '
+        '"sent_ip" : "$remote_addr", '
+        '"fwd_for" : "$http_x_forwarded_for" '
+    '}';
+
+	add_header              X-Trace-Id $txid;
+	proxy_set_header        X-Request-Id $txid;
+	add_header X-Content-Type-Options nosniff;
+
+{% if nginx_disable_access_log %}
+	access_log    off;
+{% else %}
+  access_log {{nginx_log_dir}}/access.log
+{% endif %}
+`
+{% if nginx_server_tokens %}
+  server_tokens {{nginx_server_tokens}};
+{% endif %}
+
+  sendfile {{nginx_sendfile}};
+  tcp_nopush on;
+  tcp_nodelay on;
+
+{% if nginx_keepalive == 'on' %}
+  keepalive_timeout  {{nginx_keepalive_timeout}};
+  client_body_timeout  {{nginx_client_body_timeout}};
+  client_header_timeout  {{nginx_client_header_timeout}};
+  send_timeout  {{nginx_send_timeout}};
+{% endif %}
+
+  gzip  {{nginx_gzip}};
+{% if nginx_gzip == 'on' %}
+  gzip_http_version {{nginx_gzip_http_version}};
+  gzip_comp_level {{nginx_gzip_comp_level}};
+  gzip_min_length {{nginx_gzip_min_length}};
+  gzip_proxied {{nginx_gzip_proxied}};
+  gzip_vary {{nginx_gzip_vary}};
+{% if nginx_gzip_buffers %}
+  gzip_buffers {{nginx_gzip_buffers}};
+{% endif %}
+  gzip_types {{nginx_gzip_types|join(' ')}};
+  gzip_min_length {{nginx_gzip_min_length}};
+  gzip_disable     "{{nginx_gzip_disable}}";
+{% endif %}
+
+{% if nginx_buffers == 'on' %}
+  client_body_buffer_size  {{nginx_client_body_buffer_size}};
+  client_header_buffer_size  {{nginx_client_header_buffer_size}};
+  client_max_body_size  {{nginx_client_max_body_size}};
+  large_client_header_buffers  {{nginx_large_client_header_buffers}};
+{% endif %}
+
+  server_names_hash_bucket_size {{nginx_server_names_hash_bucket_size}};
+  types_hash_max_size {{nginx_types_hash_max_size}};
+  types_hash_bucket_size {{nginx_types_hash_bucket_size}};
+{% if nginx_proxy_read_timeout %}
+  proxy_read_timeout {{nginx_proxy_read_timeout}};
+{% endif %}
+
+	###### SSL CONFIG
+	# https://cipherli.st/
+
+	ssl_ciphers EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH+aRSA+RC4:EECDH:EDH+aRSA:RC4:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS;
+
+	ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+	ssl_session_cache shared:SSL:10m;
+	
+	ssl_stapling on;
+	ssl_stapling_verify on;
+	resolver 8.8.4.4 8.8.8.8 valid=300s;
+	resolver_timeout 10s;
+	
+	ssl_prefer_server_ciphers on;
+	ssl_dhparam /etc/ssl/certs/dhparam.pem;
+	
+	####### SSL END
+
+
+  include {{nginx_config_dir}}/conf.d/*.conf;
+  include {{nginx_config_dir}}/sites-enabled/*;
+}
+

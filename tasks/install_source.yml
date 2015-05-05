@@ -1,0 +1,29 @@
+---
+
+- name: install - download nginx with sha256 check
+  get_url:
+    url={{ nginx_source_url_root }}/{{ nginx_source_filename }}
+    dest={{ nginx_build_folder }}
+    sha256sum={{ nginx_source_checksum }}
+
+- name: install - extract nginx
+  unarchive:
+    src={{ nginx_build_folder }}/{{ nginx_source_filename }}
+    dest={{ nginx_build_folder }}
+    copy=no
+
+- name: install - configure build of nginx
+  command: "./configure {{ (nginx_build_flags + nginx_build_extended_flags)|join(' ') }}"
+  args: 
+    chdir: "{{ nginx_build_folder }}/{{ nginx_source_filename|replace(\'.tar.gz\', \'\') }}"
+
+- name: install - make nginx
+  command: make
+  args:
+    chdir: "{{ nginx_build_folder }}/{{ nginx_source_filename|replace(\'.tar.gz\', \'\') }}"
+
+- name: install - install nginx
+  command: make install
+  args:
+    chdir: "{{ nginx_build_folder }}/{{ nginx_source_filename|replace(\'.tar.gz\', \'\') }}"
+
