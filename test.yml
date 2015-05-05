@@ -4,6 +4,9 @@
 
   vars:
     nginx_openssl_hdparam_bits: 512
+    nginx_pagespeed_build: true
+    nginx_naxsi_build: true
+    nginx_naxsi_enabled: true
   roles:
     - {role: nginx }
 

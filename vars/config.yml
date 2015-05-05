@@ -48,9 +48,6 @@ nginx_gzip_types:
   - image/svg+xml
 nginx_gzip_disable: "MSIE [1-6]\\."
 
-nginx_naxsi_enabled: false
-
-
 # Health
 
 nginx_allow_health_cidr:

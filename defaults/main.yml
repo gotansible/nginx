@@ -96,6 +96,7 @@ nginx_naxsi_build: false
 nginx_naxsi_build_flag: "--add-module={{nginx_build_folder}}/naxsi-{{nginx_naxsi_version}}/naxsi_src"
 nginx_naxsi_version: "0.53-2"
 nginx_naxsi_url: "https://github.com/nbs-system/naxsi/archive/{{nginx_naxsi_version}}.tar.gz"
+nginx_naxsi_enabled: false
 
 # PageSpeed
 # https://developers.google.com/speed/pagespeed/module/build_ngx_pagespeed_from_source
