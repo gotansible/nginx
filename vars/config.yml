@@ -49,7 +49,6 @@ nginx_gzip_types:
 nginx_gzip_disable: "MSIE [1-6]\\."
 
 # Health
-
 nginx_allow_health_cidr:
   - 10.0.0.0/24
   - 10.0.1.0/24
