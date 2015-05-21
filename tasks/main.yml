@@ -16,9 +16,6 @@
 - name: general config
   include: config.yml
 
-- name: setup sites
-  include: sites.yml
-
 - name: service
   include: runit_service.yml
 
