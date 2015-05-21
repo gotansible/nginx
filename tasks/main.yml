@@ -12,7 +12,13 @@
   when: nginx_naxsi_build
 
 - include: install_source.yml
-- include: config.yml
 
-- include: runit_service.yml
+- name: general config
+  include: config.yml
+
+- name: setup sites
+  include: sites.yml
+
+- name: service
+  include: runit_service.yml
 

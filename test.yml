@@ -7,6 +7,7 @@
     nginx_pagespeed_build: true
     nginx_naxsi_build: true
     nginx_naxsi_enabled: true
+    nginx_sites: []
   roles:
     - {role: nginx }
 

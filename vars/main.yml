@@ -2,3 +2,8 @@
 
 nginx_sites_enabled: "{{ nginx_config_dir }}/sites-enabled"
 
+nginx_sites: 
+  -
+    name: blah.com
+    conf: blah.com.j2
+

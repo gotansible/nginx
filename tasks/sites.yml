@@ -1,0 +1,8 @@
+---
+
+- name: sites - install config
+  template:
+    src={{ item.conf}}
+    dest={{ nginx_sites_enabled}}/{{ item.name }}
+    mode=644
+  with_items: nginx_sites
