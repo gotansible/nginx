@@ -28,7 +28,7 @@
 - name: config - configure health.site
   template:
     src=health.site.j2
-    dest={{ nginx_config_dir }}/sites-enabled/health.site
+    dest={{ nginx_sites_enabled}}/health.site
     mode=0644
     backup=yes
   notify: reload nginx

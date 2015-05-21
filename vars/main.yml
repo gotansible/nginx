@@ -1,2 +1,4 @@
 ---
 
+nginx_sites_enabled: {{ nginx_config_dir }}/sites-enabled
+

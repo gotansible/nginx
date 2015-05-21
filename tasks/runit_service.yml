@@ -6,7 +6,7 @@
     enabled: yes
     state: up
     timeout: 10
-    user: "{{ nginx_user }}"
+    user: root
     command: "{{ nginx_bin }} -c {{ nginx_config_dir }}/nginx.conf"
   register: nginx_service_status
 
