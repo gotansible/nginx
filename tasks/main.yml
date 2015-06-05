@@ -17,5 +17,5 @@
   include: config.yml
 
 - name: service
-  include: runit_service.yml
+  include: service.yml
 
