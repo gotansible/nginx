@@ -10,6 +10,15 @@
     chdir: /etc/ssl/certs
   when: not hdparam_file.stat.exists
 
+- name: config - ensure sites directories
+  file:
+    state=directory
+    path={{ item }}
+    mode=0755
+  with_items:
+    - "{{ nginx_sites_enabled_dir }}"
+    - "{{ nginx_sites_available_dir }}"
+
 - name: config - configure mime.types
   copy:
     src=mime.types
@@ -28,7 +37,7 @@
 - name: config - configure health.site
   template:
     src=health.site.j2
-    dest={{ nginx_sites_dir}}/health.site
+    dest={{ nginx_sites_enabled_dir}}/health.site
     mode=0644
     backup=yes
   notify: reload nginx

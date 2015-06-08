@@ -1,4 +1,5 @@
 ---
 
-nginx_sites_dir: "{{ nginx_config_dir }}/sites-enabled"
+nginx_sites_enabled_dir: "{{ nginx_config_dir }}/sites-enabled"
+nginx_sites_available_dir: "{{ nginx_config_dir }}/sites-available"
 
