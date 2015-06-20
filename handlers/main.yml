@@ -1,11 +1,21 @@
 ---
 
 - name: restart nginx
-  runit: name={{ nginx_service_name }} state=up timeout=9 action=restart
+  runit:
+    name={{ nginx_service_name }}
+    action=restart
+    state=up
+    enabled=true
+    timeout=9
   when: not nginx_service_status.restarted
 
 - name: reload nginx
-  runit: name={{ nginx_service_name }} state=up timeout=9 action=reload
+  runit: 
+    name={{ nginx_service_name }} 
+    action=reload
+    state=up
+    enabled=true
+    timeout=9
 
 
 

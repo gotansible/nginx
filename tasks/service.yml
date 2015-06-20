@@ -4,7 +4,7 @@
   runit:
     name: "{{ nginx_service_name }}"
     enabled: yes
-    state: up
+    state: start
     timeout: 10
     user: root
     command: "{{ nginx_bin }} -c {{ nginx_config_dir }}/nginx.conf"
