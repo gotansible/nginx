@@ -39,7 +39,6 @@
     src=health.site.j2
     dest={{ nginx_sites_enabled_dir}}/health.site
     mode=0644
-    backup=yes
   notify: reload nginx
 
 - name: config - test config
