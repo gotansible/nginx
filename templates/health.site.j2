@@ -1,4 +1,4 @@
-
+#jinja2: trim_blocks: True, lstrip_blocks: True
 server {
 	listen 80;
 	server_name health;
@@ -11,9 +11,9 @@ server {
 	location /nginx_status {
 		stub_status on;
 		access_log   on;
-	  {% for cidr in nginx_allow_health_cidr %}
+{% for cidr in nginx_allow_health_cidr %}
 		allow {{cidr}};
-	  {% endfor %}
+{% endfor %}
 		allow 127.0.0.1;
 		deny all;
 	}
