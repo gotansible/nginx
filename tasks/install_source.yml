@@ -19,17 +19,17 @@
   command: "./configure {{ (nginx_build_flags + nginx_build_extended_flags)|join(' ') }} {{ nginx_build_optional_flags }}"
   args: 
     chdir: "{{ nginx_build_folder }}/{{ nginx_source_filename|replace('.tar.gz', '') }}"
-  when: not nginx_installed.stat.exists
+  when: not nginx_installed.stat.exists or nginx_reinstall
 
 - name: install - make nginx
   command: make
   args:
     chdir: "{{ nginx_build_folder }}/{{ nginx_source_filename|replace('.tar.gz', '') }}"
-  when: not nginx_installed.stat.exists
+  when: not nginx_installed.stat.exists or nginx_reinstall
 
 - name: install - install nginx
   command: make install
   args:
     chdir: "{{ nginx_build_folder }}/{{ nginx_source_filename|replace('.tar.gz', '') }}"
-  when: not nginx_installed.stat.exists
+  when: not nginx_installed.stat.exists or nginx_reinstall
 
