@@ -3,7 +3,7 @@
 
 - include: depend.yml
 - include: setup.yml
-- include: ngx_txid.yml
+- include: modules.yml
 
 - include: pagespeed.yml
   when: nginx_pagespeed_build

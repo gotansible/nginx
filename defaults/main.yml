@@ -15,10 +15,13 @@ nginx_build_folder: /tmp/nginx
 nginx_pid: /var/run/nginx.pid
 
 nginx_openssl_hdparam_bits: 2048
-nginx_txid_module_path: "{{ nginx_build_folder}}/ngx_txid"
+nginx_module_ngx_txid_file: ngx_txid_f1c197cb9c.tar.gz
+nginx_module_ngx_cache_purge_file: ngx_cache_purge-2.3.tar.gz
+nginx_module_ngx_txid_path: "{{ nginx_build_folder}}/ngx_txid"
+nginx_module_ngx_cache_purge_path: "{{ nginx_build_folder}}/ngx_cache_purge-2.3"
 
 # also needs the pagespeed build flagset
-nginx_pagespeed_enabled: true
+nginx_pagespeed_enabled: false
 nginx_pagespeed_cache_dir: /var/cache/pagespeed
 nginx_pagespeed_log_dir: /var/log/pagespeed
 nginx_pagespeed_filecachesizekb: 409600
@@ -55,7 +58,8 @@ nginx_build_extended_flags:
   - --with-http_gzip_static_module
   - --with-http_stub_status_module
   - --with-http_geoip_module
-  - --add-module={{ nginx_txid_module_path }}
+  - --add-module={{ nginx_module_ngx_txid_path }}
+  - --add-module={{ nginx_module_ngx_cache_purge_path }}
   - --with-http_spdy_module
   - --with-google_perftools_module
 

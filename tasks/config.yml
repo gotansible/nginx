@@ -24,7 +24,7 @@
     src=mime.types
     dest={{ nginx_config_dir }}
     mode=0644
-  notify: reload nginx
+  notify: restart nginx
 
 - name: config - pagespeed
   template:
@@ -50,14 +50,14 @@
     dest={{ nginx_config_dir }}/nginx.conf
     validate='{{ nginx_bin }} -t -c %s'
     mode=0644
-  notify: reload nginx
+  notify: restart nginx
 
 - name: config - configure health.site
   template:
     src=health.site.j2
     dest={{ nginx_sites_enabled_dir}}/health.site
     mode=0644
-  notify: reload nginx
+  notify: restart nginx
 
 - name: config - test config
   command: "{{ nginx_bin }} -t -c {{ nginx_config_dir }}/nginx.conf"

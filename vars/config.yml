@@ -10,10 +10,10 @@ nginx_server_tokens: 'off'
 #https://t37.net/nginx-optimization-understanding-sendfile-tcp_nodelay-and-tcp_nopush.html
 nginx_sendfile: 'on'
 nginx_keepalive: 'on'
-nginx_keepalive_timeout: 40
-nginx_client_body_timeout: 20
-nginx_client_header_timeout: 15
-nginx_send_timeout: 15
+nginx_keepalive_timeout: 20s
+nginx_client_body_timeout: 20s
+nginx_client_header_timeout: 15s
+nginx_send_timeout: 15s
 nginx_proxy_read_timeout: 60s
 nginx_buffers: 'on'
 nginx_client_body_buffer_size: 12k
@@ -48,8 +48,4 @@ nginx_gzip_types:
   - image/svg+xml
 nginx_gzip_disable: "MSIE [1-6]\\."
 
-# Health
-nginx_allow_health_cidr:
-  - 10.0.0.0/24
-  - 10.0.1.0/24
-  - 10.0.2.0/24
+

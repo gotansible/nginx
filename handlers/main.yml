@@ -4,7 +4,5 @@
   shell: nginx -t && sv restart nginx
   when: nginx_service_status is defined and not nginx_service_status.restarted
 
-- name: reload nginx
-  shell: nginx -t && nginx -s reload
 
 
