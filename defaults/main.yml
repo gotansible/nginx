@@ -17,7 +17,19 @@ nginx_pid: /var/run/nginx.pid
 nginx_openssl_hdparam_bits: 2048
 nginx_txid_module_path: "{{ nginx_build_folder}}/ngx_txid"
 
+# also needs the pagespeed build flagset
+nginx_pagespeed_enabled: true
+nginx_pagespeed_cache_dir: /var/cache/pagespeed
+nginx_pagespeed_log_dir: /var/log/pagespeed
+nginx_pagespeed_filecachesizekb: 409600
+nginx_pagespeed_lrucachekbperprocess: 8192
+nginx_pagespeed_lrucachebytelimit: 16384
+
+nginx_acl_stats:
+  - 127.0.0.1
+
 nginx_reinstall: false
+
 nginx_install_dir : "/usr/local/nginx}"
 nginx_config_dir : "/etc/{{  nginx_service_name }}"
 nginx_log_dir : "/var/log/{{ nginx_service_name }}"

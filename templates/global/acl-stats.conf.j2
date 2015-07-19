@@ -1,0 +1,7 @@
+#jinja2: trim_blocks: True, lstrip_blocks: True
+
+{% for ip in nginx_acl_stats %}
+allow {{ ip }};
+{% endfor %}
+deny all;
+

@@ -14,7 +14,7 @@
     state=directory
     path={{ nginx_build_folder }}
 
-- name: setup- create directories
+- name: setup - create directories
   file:
     state=directory
     path={{ item }}
@@ -23,13 +23,25 @@
     mode=0755
   with_items:
     - "{{ nginx_config_dir }}"
-    - "{{ nginx_config_dir }}/sites-enabled"
-    - "{{ nginx_config_dir }}/conf.d"
+    - "{{ nginx_sites_enabled_dir }}"
+    - "{{ nginx_sites_available_dir }}"
+    - "{{ nginx_global_dir }}"
+    - "{{ nginx_shared_dir }}"
     - "{{ nginx_log_dir }}"
     - /var/lib/nginx/tmp/client_body
     - /var/lib/nginx/tmp/proxy
     - /var/lib/nginx/tmp/fastcgi
     - /etc/ssl/certs
 
-
+- name: setup - directories for pagespeed
+  file:
+    state=directory
+    path={{ item }}
+    owner={{ nginx_user }}
+    group={{ nginx_group }}
+    mode=0755
+  with_items:
+    - "{{ nginx_pagespeed_cache_dir }}"
+    - "{{ nginx_pagespeed_log_dir }}"
+  when: nginx_pagespeed_build
 

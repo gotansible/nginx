@@ -26,6 +26,24 @@
     mode=0644
   notify: reload nginx
 
+- name: config - pagespeed
+  template:
+    src=global/{{ item }}.j2
+    dest={{ nginx_global_dir }}/{{ item }}
+    mode=0644
+  with_items:
+    - pagespeed.conf
+    - pagespeed-stats.conf
+    - pagespeed-location.conf
+  notify: restart nginx
+
+- name: config - configure acl
+  template:
+    src=global/acl-stats.conf.j2
+    dest={{ nginx_global_dir }}/acl-stats.conf
+    mode=0644
+  notify: restart nginx
+
 - name: config - configure root nginx.conf
   template:
     src=nginx.conf.j2

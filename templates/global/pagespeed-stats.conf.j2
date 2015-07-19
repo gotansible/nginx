@@ -1,0 +1,25 @@
+#jinja2: trim_blocks: True, lstrip_blocks: True
+############################################
+# STATS - Paths
+############################################
+
+pagespeed StatisticsPath /pagespeed/statistics;
+pagespeed GlobalStatisticsPath /pagespeed/global_statistics;
+pagespeed MessagesPath /pagespeed/message;
+pagespeed ConsolePath /pagespeed/console;
+pagespeed AdminPath /pagespeed/admin;
+pagespeed GlobalAdminPath /pagespeed/global_admin;
+
+############################################
+# STATS - Settings
+############################################
+
+pagespeed Statistics on;
+pagespeed StatisticsLogging on;
+pagespeed UsePerVhostStatistics on;
+pagespeed LogDir {{ nginx_pagespeed_log_dir }};
+
+#pagespeed StatisticsLoggingIntervalMs 60000;
+#pagespeed StatisticsLoggingMaxFileSizeKb 1024;
+
+
