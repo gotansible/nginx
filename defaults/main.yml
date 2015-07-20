@@ -1,42 +1,87 @@
 ---
 # defaults file for nginx
 
-nginx_service_name: nginx
-
-nginx_user: nginx
-nginx_group: nginx
-
 nginx_version: 1.7.6
 nginx_source_url_root: http://nginx.org/download
 nginx_source_filename: nginx-{{ nginx_version }}.tar.gz
 nginx_source_checksum: 08e2efc169c9f9d511ce53ea16f17d8478ab9b0f7a653f212c03c61c52101599
+
+nginx_service_name: nginx
+nginx_user: nginx
+nginx_group: nginx
+
+nginx_install_dir : "/usr/local/nginx}"
+nginx_config_dir : "/etc/{{  nginx_service_name }}"
+nginx_log_dir : "/var/log/{{ nginx_service_name }}"
+
+nginx_reinstall: false
+
+nginx_acl_stats:
+  - 127.0.0.1
+
+# recursive true == return the first non-trusted ip
+nginx_real_ip_recursive: true
+nginx_real_ip_trusted:
+  - 10.0.0.0/16
+
 nginx_bin: /usr/local/sbin/nginx
 nginx_build_folder: /tmp/nginx
 nginx_pid: /var/run/nginx.pid
 
 nginx_openssl_hdparam_bits: 2048
 nginx_module_ngx_txid_file: ngx_txid_f1c197cb9c.tar.gz
-nginx_module_ngx_cache_purge_file: ngx_cache_purge-2.3.tar.gz
 nginx_module_ngx_txid_path: "{{ nginx_build_folder}}/ngx_txid"
-nginx_module_ngx_cache_purge_path: "{{ nginx_build_folder}}/ngx_cache_purge-2.3"
+nginx_module_ngx_cache_purge_file: ngx_cache_purge-2.3.tar.gz
+nginx_module_ngx_http_headers_more_file: headers-more-nginx-module-0.261.tar.gz
+
+############################################
+# Caching
+############################################
+
+# tempfs is an option if machine has enough ram. typically 20% of ram
+# /var/run on ubuntu
+# /dev/shm
+# /var/run
+# df -h /var/run
+
+nginx_cache_dir: /var/cache
+
+# proxy
+nginx_proxy_cache_path_dir: "{{nginx_cache_dir}}/proxy"
+nginx_proxy_cache_paths:
+  - "{{ nginx_proxy_cache_path_dir }} levels=1:2 keys_zone=htmlcache:100m max_size=1024m inactive=605m"
+
+nginx_proxy_cache_key: "$scheme$request_method$host$request_uri"
+nginx_proxy_cache_use_stale: error timeout invalid_header http_500
+nginx_proxy_ignore_headers: Cache-Control Expires Set-Cookie
+
+# fastcgi
+nginx_fastcgi_cache_path_dir: "{{nginx_cache_dir}}/fast_cgi"
+nginx_fastcgi_cache_paths:
+  - "{{ nginx_fastcgi_cache_path_dir }} settings: levels=1:2 keys_zone=GENERIC:100m max_size=1024m inactive=605m"
+
+nginx_fastcgi_cache_key: "$scheme$request_method$host$request_uri"
+nginx_fastcgi_cache_use_stale: error timeout invalid_header http_500
+nginx_fastcgi_ignore_headers: Cache-Control Expires Set-Cookie
+
+############################################
+# Pagespeed
+############################################
 
 # also needs the pagespeed build flagset
 nginx_pagespeed_enabled: false
-nginx_pagespeed_cache_dir: /var/cache/pagespeed
+nginx_pagespeed_cache_dir: "{{nginx_cache_dir}}/pagespeed"
 nginx_pagespeed_log_dir: /var/log/pagespeed
-nginx_pagespeed_filecachesizekb: 409600
-nginx_pagespeed_lrucachekbperprocess: 8192
-nginx_pagespeed_lrucachebytelimit: 16384
+nginx_pagespeed_filecache_sizekb: 409600
+nginx_pagespeed_filecache_cleanintervalms: 3600000
+nginx_pagespeed_filecache_inodelimit: 500000
+nginx_pagespeed_lrucache_kb_perprocess: 16384
+nginx_pagespeed_lrucache_bytelimit: 32768
+nginx_pagespeed_beacon_key: MAKE_ME_A_PRIVATE_VALUE
 
-nginx_acl_stats:
-  - 127.0.0.1
-
-nginx_reinstall: false
-
-nginx_install_dir : "/usr/local/nginx}"
-nginx_config_dir : "/etc/{{  nginx_service_name }}"
-nginx_log_dir : "/var/log/{{ nginx_service_name }}"
-
+############################################
+## BUILD Nginx
+############################################
 nginx_build_flags:
   - --user={{ nginx_user }}
   - --group={{ nginx_group }}
@@ -59,7 +104,8 @@ nginx_build_extended_flags:
   - --with-http_stub_status_module
   - --with-http_geoip_module
   - --add-module={{ nginx_module_ngx_txid_path }}
-  - --add-module={{ nginx_module_ngx_cache_purge_path }}
+  - --add-module={{ nginx_module_ngx_cache_purge | replace(".tar.gz", "") }}
+  - --add-module={{ nginx_module_ngx_http_headers_more_file | replace(".tar.gz", "") }}
   - --with-http_spdy_module
   - --with-google_perftools_module
 
@@ -107,18 +153,27 @@ centos_build_essential:
   - m4
   - ncurses-devel
 
+############################################
+## BUILD naxsi
+############################################
+
 # naxsi_module configuration
 # https://github.com/nbs-system/naxsi
+
 nginx_naxsi_build: false
 nginx_naxsi_build_flag: "--add-module={{nginx_build_folder}}/naxsi-{{nginx_naxsi_version}}/naxsi_src"
 nginx_naxsi_version: "0.53-2"
 nginx_naxsi_url: "https://github.com/nbs-system/naxsi/archive/{{nginx_naxsi_version}}.tar.gz"
 nginx_naxsi_enabled: false
 
-# PageSpeed
+############################################
+## BUILD Pagespeed
+############################################
+
 # https://developers.google.com/speed/pagespeed/module/build_ngx_pagespeed_from_source
 # http://ngxpagespeed.com/ngx_pagespeed_example/
 # https://developers.google.com/speed/pagespeed/module/configuration
+
 nginx_pagespeed_build: false
 nginx_pagespeed_build_flag: "--add-module={{ nginx_build_folder}}/ngx_pagespeed-release-{{ nginx_pagespeed_version }}-beta"
 nginx_pagespeed_version: 1.9.32.3

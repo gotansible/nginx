@@ -1,4 +1,5 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
+
 #######################################################
 # Enabled 
 #######################################################
@@ -18,16 +19,16 @@ pagespeed RewriteLevel OptimizeForBandwidth;
 # needs to exist and be writable by nginx. best if local SSD 
 pagespeed FileCachePath {{ nginx_pagespeed_cache_dir }};
 
-pagespeed FileCacheSizeKb          {{ nginx_pagespeed_filecachesizekb }};
-pagespeed FileCacheCleanIntervalMs 3600000;
-pagespeed FileCacheInodeLimit      500000;
+pagespeed FileCacheSizeKb          {{ nginx_pagespeed_filecache_sizekb }};
+pagespeed FileCacheCleanIntervalMs {{ nginx_pagespeed_filecache_cleanintervalms }};
+pagespeed FileCacheInodeLimit      {{ nginx_pagespeed_filecache_inodelimit }};
 
 ######################################
 # In memory cache
 ######################################
 
-pagespeed LRUCacheKbPerProcess     {{ nginx_pagespeed_lrucachekbperprocess }};
-pagespeed LRUCacheByteLimit        {{ nginx_pagespeed_lrucachebytelimit }};
+pagespeed LRUCacheKbPerProcess     {{ nginx_pagespeed_lrucache_kb_perprocess }};
+pagespeed LRUCacheByteLimit        {{ nginx_pagespeed_lrucache_bytelimit }};
 
 pagespeed CreateSharedMemoryMetadataCache "{{ nginx_pagespeed_cache_dir }}/" 51200;
 
@@ -35,13 +36,14 @@ pagespeed CreateSharedMemoryMetadataCache "{{ nginx_pagespeed_cache_dir }}/" 512
 # Cache - Purging
 ######################################
 
+# new behavior is 'on', old behavior was to flush entire cache
 pagespeed EnableCachePurge on;
-pagespeed PurgeMethod PURGE;
+#pagespeed PurgeMethod PURGE;
 
 #######################################################
 # Set it to 0 if you want to disable this feature.
 #######################################################
 
-pagespeed MessageBufferSize 100000;
+pagespeed MessageBufferSize 200000;
 
 

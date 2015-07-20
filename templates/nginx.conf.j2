@@ -28,24 +28,12 @@ http {
 	include      {{nginx_config_dir}}/naxsi_core.rules;
 {% endif %}
 
-	log_format json '{"txid" : "$txid", '
-	    '"status" : \"$status\", '
-	    '"method" : "$request_method", '
-	    '"uri" : "$uri", '
-	    '"gross_time" : "$request_time", '
-	    '"upstream_time" : "$upstream_response_time", '
-	    '"bytes" : "$body_bytes_sent", '
-	    '"refer" : "$http_referer", '
-	    '"domain" : "$host", '
-	    '"client_ip" : "$http_incap_client_ip", '
-	    '"ua" : "$http_user_agent", '
-	    '"sent_ip" : "$remote_addr", '
-	    '"fwd_for" : "$http_x_forwarded_for" '
-	'}';
+	include logformat.conf
 
 	add_header			X-Trace-Id $txid;
 	add_header			X-Content-Type-Options nosniff;
 	proxy_set_header	X-Request-Id $txid;
+	
 
 {% if nginx_disable_access_log %}
 	access_log    off;
@@ -53,9 +41,12 @@ http {
 	access_log {{nginx_log_dir}}/access.log;
 {% endif %}
 
-{% if nginx_server_tokens %}
+	##### Security
+
 	server_tokens {{nginx_server_tokens}};
-{% endif %}
+	server_name_in_redirect off;
+
+	##### Basic
 
 	sendfile {{nginx_sendfile}};
 	tcp_nopush on;
@@ -67,6 +58,8 @@ http {
 	client_header_timeout  {{nginx_client_header_timeout}};
 	send_timeout  {{nginx_send_timeout}};
 {% endif %}
+
+	###### Compression
 
 	gzip  {{nginx_gzip}};
 {% if nginx_gzip == 'on' %}
@@ -114,10 +107,20 @@ http {
 	
 	####### SSL END
 	
+	include {{nginx_config_dir}}/global/mobile.conf;
+
+	####### Performance and Caching
+
+	include global/map-new-cache-control-header-val.conf;
+
+	include global/proxy-cache-path.conf
+
 	{% if nginx_pagespeed_build %}
 	include {{nginx_config_dir}}/global/pagespeed.conf;
 	include {{nginx_config_dir}}/global/pagespeed-stats.conf;
 	{% endif %}
+
+	######## Include Files placed in these dirs, order is important. Expecting conf.d to come first
 
 	include {{nginx_config_dir}}/conf.d/*.conf;
 	include {{nginx_config_dir}}/sites-enabled/*;

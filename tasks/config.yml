@@ -19,11 +19,18 @@
     - "{{ nginx_sites_enabled_dir }}"
     - "{{ nginx_sites_available_dir }}"
 
-- name: config - configure mime.types
+- name: config - global configs copy
   copy:
-    src=mime.types
+    src=global/
+    dest={{ nginx_global_dir }}
+    copy=yes
+
+- name: config - root configs copy
+  copy:
+    src=root/
     dest={{ nginx_config_dir }}
     mode=0644
+    copy=yes
   notify: restart nginx
 
 - name: config - pagespeed
@@ -35,13 +42,18 @@
     - pagespeed.conf
     - pagespeed-stats.conf
     - pagespeed-location.conf
+  when: nginx_pagespeed_build
   notify: restart nginx
 
-- name: config - configure acl
+- name: config - global templates
   template:
-    src=global/acl-stats.conf.j2
-    dest={{ nginx_global_dir }}/acl-stats.conf
+    src=global/{{ item }}.j2
+    dest={{ nginx_global_dir }}/{{ item }}
     mode=0644
+  with_items:
+    - acl-stats.conf
+    - real-ip.conf
+    - proxy-cache-path.conf
   notify: restart nginx
 
 - name: config - configure root nginx.conf

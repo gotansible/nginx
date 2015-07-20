@@ -1,0 +1,45 @@
+#jinja2: trim_blocks: True, lstrip_blocks: True
+
+real_ip_header X-Forwarded-For;
+
+# because the first IP is the real one and nginx grabs the last one
+# http://www.jayway.com/2014/03/28/how-to-get-the-client-ip-when-using-cloudfront-and-nginx/
+# https://en.wikipedia.org/wiki/X-Forwarded-For#Format
+
+real_ip_recursive {% if nginx_real_ip_recursive %}on{% else %}off{% endif %};
+
+{% for cidr in nginx_real_ip_trusted %}
+set_real_ip_from {{ cidr }};
+{% endfor %}
+
+#CloudFlare
+set_real_ip_from 103.21.244.0/22;
+set_real_ip_from 103.22.200.0/22;
+set_real_ip_from 103.31.4.0/22;
+set_real_ip_from 104.16.0.0/12;
+set_real_ip_from 108.162.192.0/18;
+set_real_ip_from 141.101.64.0/18;
+set_real_ip_from 162.158.0.0/15;
+set_real_ip_from 172.64.0.0/13;
+set_real_ip_from 173.245.48.0/20;
+set_real_ip_from 188.114.96.0/20;
+set_real_ip_from 190.93.240.0/20;
+set_real_ip_from 197.234.240.0/22;
+set_real_ip_from 198.41.128.0/17;
+set_real_ip_from 199.27.128.0/21;
+set_real_ip_from 2400:cb00::/32;
+set_real_ip_from 2405:8100::/32;
+set_real_ip_from 2405:b500::/32;
+set_real_ip_from 2606:4700::/32;
+set_real_ip_from 2803:f800::/32;
+
+#Incapsula
+set_real_ip_from 199.83.128.0/21;
+set_real_ip_from 198.143.32.0/19;
+set_real_ip_from 149.126.72.0/21;
+set_real_ip_from 103.28.248.0/22;
+set_real_ip_from 45.64.64.0/22;
+set_real_ip_from 185.11.124.0/22;
+set_real_ip_from 192.230.64.0/18;
+set_real_ip_from 2620:28:4000::/44;
+set_real_ip_from 2a02:e980::/29;

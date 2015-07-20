@@ -1,4 +1,8 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
+#######################################################
+# Pagespeed admin urls
+# - goes in the 'server' block
+#######################################################
 
 location /pagespeed/statistics			{ include global/acl-stats.conf; }
 location /pagespeed/global_statistics	{ include global/acl-stats.conf; }
@@ -7,10 +11,12 @@ location /pagespeed/console				{ include global/acl-stats.conf; }
 location ~ ^/pagespeed/admin			{ include global/acl-stats.conf; }
 location ~ ^/pagespeed/global_admin		{ include global/acl-stats.conf; }
 
-#  Ensure requests for pagespeed optimized resources go to the pagespeed
-#  handler and no extraneous headers get set.
 location ~ "\.pagespeed\.([a-z]\.)?[a-z]{2}\.[^.]{10}\.[^.]+" {
+	# Ensure requests for pagespeed optimized resources go to the pagespeed handler and no extraneous headers get set.
 	add_header "" "";
+
+	# PageSpeed already caches its optimized resources, exclude them from being cached by the downstream cache
+	set $bypass_cache 1;
 }
 
 location ~ "^/pagespeed_static/" { }

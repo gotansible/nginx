@@ -1,13 +1,12 @@
 ---
 
-- name: modules - ngx_txid unarchive
+- name: modules - unarchive modules
   unarchive:
-    src={{ nginx_module_ngx_txid_file }}
+    src={{ item }}
     dest={{ nginx_build_folder }}
     copy=yes
+  with_items:
+    - "{{ nginx_module_ngx_txid_file }}"
+    - "{{ nginx_module_ngx_cache_purge_file }}"
+    - "{{ nginx_module_ngx_http_headers_more_file }}"
 
-- name: modules - ngx_cache_purge unarchive
-  unarchive:
-    src={{ nginx_module_ngx_cache_purge_file }}
-    dest={{ nginx_build_folder }}
-    copy=yes

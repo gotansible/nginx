@@ -1,0 +1,19 @@
+#jinja2: trim_blocks: True, lstrip_blocks: True
+
+# defaults fastcgi_cache
+fastcgi_cache_key			{{ nginx_fastcgi_cache_key }};
+fastcgi_cache_use_stale		{{ nginx_fastcgi_cache_use_stale }};
+fastcgi_ignore_headers		{{ nginx_fastcgi_ignore_headers }};
+
+# defaults proxy_cache
+proxy_cache_key				{{ nginx_proxy_cache_key }};
+proxy_cache_use_stale		{{ nginx_proxy_cache_use_stale }};
+fastcgi_ignore_headers		{{ nginx_proxy_ignore_headers }};
+
+{% for path in nginx_fastcgi_cache_paths %}
+fastcgi_cache_path {{ path }};
+{% endfor %}
+
+{% for path in nginx_proxy_cache_paths %}
+proxy_cache_path {{ path }};
+{% endfor %}
