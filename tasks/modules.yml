@@ -9,4 +9,6 @@
     - "{{ nginx_module_ngx_txid_file }}"
     - "{{ nginx_module_ngx_cache_purge_file }}"
     - "{{ nginx_module_ngx_http_headers_more_file }}"
+    - "{{ nginx_module_ngx_devel_kit_file }}"
+    - "{{ nginx_module_ngx_set_misc_file }}"
 

@@ -25,14 +25,21 @@ nginx_real_ip_trusted:
   - 10.0.0.0/16
 
 nginx_bin: /usr/local/sbin/nginx
-nginx_build_folder: /tmp/nginx
+nginx_build_folder: /var/ansible/cache/nginx
 nginx_pid: /var/run/nginx.pid
 
 nginx_openssl_hdparam_bits: 2048
+
+############################################
+# Modules
+############################################
+
 nginx_module_ngx_txid_file: ngx_txid_f1c197cb9c.tar.gz
 nginx_module_ngx_txid_path: "{{ nginx_build_folder}}/ngx_txid"
 nginx_module_ngx_cache_purge_file: ngx_cache_purge-2.3.tar.gz
 nginx_module_ngx_http_headers_more_file: headers-more-nginx-module-0.261.tar.gz
+nginx_module_ngx_devel_kit_file: ngx_devel_kit-0.2.19.tar.gz
+nginx_module_ngx_set_misc_file: set-misc-nginx-module-0.29.tar.gz
 
 ############################################
 # Caching
@@ -58,7 +65,7 @@ nginx_proxy_ignore_headers: Cache-Control Expires Set-Cookie
 # fastcgi
 nginx_fastcgi_cache_path_dir: "{{nginx_cache_dir}}/fast_cgi"
 nginx_fastcgi_cache_paths:
-  - "{{ nginx_fastcgi_cache_path_dir }} settings: levels=1:2 keys_zone=GENERIC:100m max_size=1024m inactive=605m"
+  - "{{ nginx_fastcgi_cache_path_dir }} levels=1:2 keys_zone=GENERIC:100m max_size=1024m inactive=605m"
 
 nginx_fastcgi_cache_key: "$scheme$request_method$host$request_uri"
 nginx_fastcgi_cache_use_stale: error timeout invalid_header http_500
@@ -104,8 +111,10 @@ nginx_build_extended_flags:
   - --with-http_stub_status_module
   - --with-http_geoip_module
   - --add-module={{ nginx_module_ngx_txid_path }}
-  - --add-module={{ nginx_module_ngx_cache_purge | replace(".tar.gz", "") }}
-  - --add-module={{ nginx_module_ngx_http_headers_more_file | replace(".tar.gz", "") }}
+  - --add-module={{ nginx_build_folder }}/{{ nginx_module_ngx_cache_purge_file | replace(".tar.gz", "") }}
+  - --add-module={{ nginx_build_folder }}/{{ nginx_module_ngx_http_headers_more_file | replace(".tar.gz", "") }}
+  - --add-module={{ nginx_build_folder }}/{{ nginx_module_ngx_devel_kit_file | replace(".tar.gz", "") }}
+  - --add-module={{ nginx_build_folder }}/{{ nginx_module_ngx_set_misc_file | replace(".tar.gz", "") }}
   - --with-http_spdy_module
   - --with-google_perftools_module
 

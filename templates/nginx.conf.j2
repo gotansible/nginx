@@ -28,7 +28,7 @@ http {
 	include      {{nginx_config_dir}}/naxsi_core.rules;
 {% endif %}
 
-	include logformat.conf
+	include {{nginx_config_dir}}/logformat.conf;
 
 	add_header			X-Trace-Id $txid;
 	add_header			X-Content-Type-Options nosniff;
@@ -111,9 +111,9 @@ http {
 
 	####### Performance and Caching
 
-	include global/map-new-cache-control-header-val.conf;
+	include {{nginx_config_dir}}/global/map-new-cache-control-header-val.conf;
 
-	include global/proxy-cache-path.conf
+	include {{nginx_config_dir}}/global/proxy-cache-path.conf;
 
 	{% if nginx_pagespeed_build %}
 	include {{nginx_config_dir}}/global/pagespeed.conf;
