@@ -38,6 +38,7 @@
     src=global/{{ item }}.j2
     dest={{ nginx_global_dir }}/{{ item }}
     mode=0644
+    force=yes
   with_items:
     - pagespeed.conf
     - pagespeed-stats.conf
@@ -50,6 +51,7 @@
     src=global/{{ item }}.j2
     dest={{ nginx_global_dir }}/{{ item }}
     mode=0644
+    force=yes
   with_items:
     - acl-stats.conf
     - real-ip.conf
@@ -62,6 +64,7 @@
     dest={{ nginx_config_dir }}/nginx.conf
     validate='{{ nginx_bin }} -t -c %s'
     mode=0644
+    force=yes
   notify: restart nginx
 
 - name: config - configure health.site
@@ -69,6 +72,7 @@
     src=health.site.j2
     dest={{ nginx_sites_enabled_dir}}/health.site
     mode=0644
+    force=yes
   notify: restart nginx
 
   #- name: config - test config
