@@ -23,12 +23,14 @@
   copy:
     src=global/
     dest={{ nginx_global_dir }}
+    force=yes
 
 - name: config - root configs copy
   copy:
     src=root/
     dest={{ nginx_config_dir }}
     mode=0644
+    force=yes
   notify: restart nginx
 
 - name: config - pagespeed
