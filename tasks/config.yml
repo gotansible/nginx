@@ -69,14 +69,14 @@
     mode=0644
   notify: restart nginx
 
-- name: config - test config
-  command: "{{ nginx_bin }} -t -c {{ nginx_config_dir }}/nginx.conf"
-  register: nginx_test
-  changed_when: False
-
-- debug: var=nginx_test
-  when: nginx_test.rc != 0
-
-- fail: msg="incorrect config"
-  when: nginx_test.rc != 0
+  #- name: config - test config
+  #  command: "{{ nginx_bin }} -t -c {{ nginx_config_dir }}/nginx.conf"
+  #  register: nginx_test
+  #  changed_when: False
+  #
+  #- debug: var=nginx_test
+  #  when: nginx_test.rc != 0
+  #
+  #- fail: msg="incorrect config"
+  #  when: nginx_test.rc != 0
 
