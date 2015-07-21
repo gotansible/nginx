@@ -70,7 +70,6 @@
   template:
     src=nginx.conf.j2
     dest={{ nginx_config_dir }}/nginx.conf
-    #validate='{{ nginx_bin }} -t -c %s'
     mode=0644
     force=yes
   notify: restart nginx
