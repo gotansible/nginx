@@ -104,16 +104,18 @@ http {
 	
 	ssl_prefer_server_ciphers on;
 	ssl_dhparam /etc/ssl/certs/dhparam.pem;
+
+	####### Common
+
+	include {{nginx_config_dir}}/global/map-variables-common.conf;
+	include {{nginx_config_dir}}/global/real-ip.conf;
 	
-	####### SSL END
+	####### Mobile
 	
 	include {{nginx_config_dir}}/global/mobile.conf;
 
 	####### Performance and Caching
 	
-
-	include {{nginx_config_dir}}/global/map-new-cache-control-header-val.conf;
-
 	include {{nginx_config_dir}}/global/proxy-cache-path.conf;
 
 	{% if nginx_pagespeed_build %}
