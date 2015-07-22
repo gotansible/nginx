@@ -100,6 +100,7 @@ nginx_build_flags:
   - --http-client-body-temp-path=/var/lib/nginx/tmp/client_body
   - --http-proxy-temp-path=/var/lib/nginx/tmp/proxy
   - --http-fastcgi-temp-path=/var/lib/nginx/tmp/fastcgi
+  - --with-ipv6
   - --lock-path=/var/lock/subsys/nginx
   - --pid-path={{ nginx_pid }}
 

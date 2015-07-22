@@ -1,6 +1,6 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
 
-#real_ip_header X-Forwarded-For;
+real_ip_header X-Forwarded-For;
 
 # because the first IP is the real one and nginx grabs the last one
 # http://www.jayway.com/2014/03/28/how-to-get-the-client-ip-when-using-cloudfront-and-nginx/
@@ -27,11 +27,13 @@ set_real_ip_from 190.93.240.0/20;
 set_real_ip_from 197.234.240.0/22;
 set_real_ip_from 198.41.128.0/17;
 set_real_ip_from 199.27.128.0/21;
-set_real_ip_from 2400:cb00::/32;
-set_real_ip_from 2405:8100::/32;
-set_real_ip_from 2405:b500::/32;
-set_real_ip_from 2606:4700::/32;
-set_real_ip_from 2803:f800::/32;
+
+# nginx real-ip was having problems with these
+# set_real_ip_from 2400:cb00::/32;
+# set_real_ip_from 2405:8100::/32;
+# set_real_ip_from 2405:b500::/32;
+# set_real_ip_from 2606:4700::/32;
+# set_real_ip_from 2803:f800::/32;
 
 #Incapsula
 set_real_ip_from 199.83.128.0/21;
