@@ -3,5 +3,8 @@
 {% for ip in nginx_acl_stats %}
 allow {{ ip }};
 {% endfor %}
+
+allow {{ ansible_default_ipv4['address'] }};
+allow 127.0.0.1;
 deny all;
 

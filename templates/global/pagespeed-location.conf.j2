@@ -4,12 +4,12 @@
 # - goes in the 'server' block
 #######################################################
 
-location /pagespeed/statistics			{ include global/acl-stats.conf; }
-location /pagespeed/global_statistics	{ include global/acl-stats.conf; }
-location /pagespeed/message				{ include global/acl-stats.conf; }
-location /pagespeed/console				{ include global/acl-stats.conf; }
-location ~ ^/pagespeed/admin			{ include global/acl-stats.conf; }
-location ~ ^/pagespeed/global_admin		{ include global/acl-stats.conf; }
+location /pagespeed_statistics			{ include global/acl-stats.conf; }
+location /pagespeed_global_statistics	{ include global/acl-stats.conf; }
+location /pagespeed_message				{ include global/acl-stats.conf; }
+location /pagespeed_console				{ include global/acl-stats.conf; }
+location ~ ^/pagespeed_admin			{ include global/acl-stats.conf; }
+location ~ ^/pagespeed_global_admin		{ include global/acl-stats.conf; }
 
 location ~ "\.pagespeed\.([a-z]\.)?[a-z]{2}\.[^.]{10}\.[^.]+" {
 	# Ensure requests for pagespeed optimized resources go to the pagespeed handler and no extraneous headers get set.
