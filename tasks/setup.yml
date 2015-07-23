@@ -3,11 +3,14 @@
   group:
     name={{ nginx_group }}
     state=present
+    system=yes
 
 - name: create nginx user
   user:
     name={{ nginx_user }}
     group={{ nginx_group }}
+    createhome=no
+    system=yes
 
 - name: setup build folder
   file:
