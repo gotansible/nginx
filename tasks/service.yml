@@ -1,5 +1,6 @@
 ---
 
+# launches as root and then changes to the user specified in the nginx config
 - name: service - setup and run
   runit:
     name: "{{ nginx_service_name }}"
