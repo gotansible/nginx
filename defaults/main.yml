@@ -8,7 +8,7 @@ nginx_source_checksum: 08e2efc169c9f9d511ce53ea16f17d8478ab9b0f7a653f212c03c61c5
 
 nginx_service_name: nginx
 
-nginx_user: www-data
+nginx_user: nginx
 nginx_group: www-data
 
 nginx_install_dir : "/usr/local/nginx}"
