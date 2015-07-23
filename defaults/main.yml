@@ -111,7 +111,6 @@ nginx_build_extended_flags:
   - --with-http_gzip_static_module
   - --with-http_stub_status_module
   - --with-http_geoip_module
-  - --with-http_realip_module
   - --add-module={{ nginx_module_ngx_txid_path }}
   - --add-module={{ nginx_build_folder }}/{{ nginx_module_ngx_cache_purge_file | replace(".tar.gz", "") }}
   - --add-module={{ nginx_build_folder }}/{{ nginx_module_ngx_http_headers_more_file | replace(".tar.gz", "") }}
@@ -119,6 +118,7 @@ nginx_build_extended_flags:
   - --add-module={{ nginx_build_folder }}/{{ nginx_module_ngx_set_misc_file | replace(".tar.gz", "") }}
   - --with-http_spdy_module
   - --with-google_perftools_module
+  #- --with-http_realip_module
 
 nginx_build_optional_flags: "{% if nginx_pagespeed_build %} {{nginx_pagespeed_build_flag}} {% endif %} {% if nginx_naxsi_build %} {{ nginx_naxsi_build_flag }} {% endif %}"
 
