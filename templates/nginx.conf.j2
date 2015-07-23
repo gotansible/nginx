@@ -28,7 +28,6 @@ http {
 	include      {{nginx_config_dir}}/naxsi_core.rules;
 {% endif %}
 
-	include {{nginx_config_dir}}/logformat.conf;
 
 	add_header			X-Trace-Id $txid;
 	add_header			X-Content-Type-Options nosniff;
@@ -110,6 +109,8 @@ http {
 	include {{nginx_config_dir}}/global/map-variables-common.conf;
 	include {{nginx_config_dir}}/global/real-ip.conf;
 	
+	include {{nginx_config_dir}}/logformat.conf;
+
 	####### Mobile
 	
 	include {{nginx_config_dir}}/global/mobile.conf;
