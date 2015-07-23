@@ -7,8 +7,9 @@ nginx_source_filename: nginx-{{ nginx_version }}.tar.gz
 nginx_source_checksum: 08e2efc169c9f9d511ce53ea16f17d8478ab9b0f7a653f212c03c61c52101599
 
 nginx_service_name: nginx
+
 nginx_user: nginx
-nginx_group: nginx
+nginx_group: www-data
 
 nginx_install_dir : "/usr/local/nginx}"
 nginx_config_dir : "/etc/{{  nginx_service_name }}"
