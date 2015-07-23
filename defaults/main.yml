@@ -8,7 +8,7 @@ nginx_source_checksum: 08e2efc169c9f9d511ce53ea16f17d8478ab9b0f7a653f212c03c61c5
 
 nginx_service_name: nginx
 
-nginx_user: nginx
+nginx_user: www-data
 nginx_group: www-data
 
 nginx_install_dir : "/usr/local/nginx}"
@@ -52,7 +52,7 @@ nginx_module_ngx_set_misc_file: set-misc-nginx-module-0.29.tar.gz
 # /var/run
 # df -h /var/run
 
-nginx_cache_dir: /var/cache
+nginx_cache_dir: /var/cache/nginx
 
 # proxy
 nginx_proxy_cache_path_dir: "{{nginx_cache_dir}}/proxy"
