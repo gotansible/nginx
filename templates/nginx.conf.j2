@@ -28,7 +28,6 @@ http {
 	include      {{nginx_config_dir}}/naxsi_core.rules;
 {% endif %}
 
-
 	add_header			X-Trace-Id $txid;
 	add_header			X-Content-Type-Options nosniff;
 	proxy_set_header	X-Request-Id $txid;
