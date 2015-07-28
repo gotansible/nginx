@@ -31,13 +31,6 @@ nginx_pid: /var/run/nginx.pid
 
 nginx_openssl_hdparam_bits: 2048
 
-############################################
-# CORS
-############################################
-
-"*" means any domain, very insecure
-nginx_cors_font_domains: []
-#  - subdomain.example.com
 
 ############################################
 # Modules
