@@ -92,19 +92,19 @@ nginx_pagespeed_beacon_key: MAKE_ME_A_PRIVATE_VALUE
 ## BUILD Nginx
 ############################################
 nginx_build_flags:
-  - --user={{ nginx_user }}
-  - --group={{ nginx_group }}
-  - --prefix=/usr/local/nginx 
+  - --user=nobody
+  - --group=nobody
+  - --prefix=/usr/local/nginx
   - --sbin-path={{ nginx_bin }}
   - --conf-path={{ nginx_config_dir }}/nginx.conf
   - --error-log-path={{ nginx_log_dir }}/error.log
   - --http-log-path={{ nginx_log_dir }}/access.log
+  - --with-ipv6
+  - --pid-path={{ nginx_pid }}
+  - --lock-path=/var/lock/subsys/nginx
   - --http-client-body-temp-path=/var/lib/nginx/tmp/client_body
   - --http-proxy-temp-path=/var/lib/nginx/tmp/proxy
   - --http-fastcgi-temp-path=/var/lib/nginx/tmp/fastcgi
-  - --with-ipv6
-  - --lock-path=/var/lock/subsys/nginx
-  - --pid-path={{ nginx_pid }}
 
 nginx_build_extended_flags:
   - --with-http_image_filter_module
